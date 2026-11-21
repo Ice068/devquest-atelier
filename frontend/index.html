@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DevQuest Atelier — Tactile HTML Craft & SOLO AI Studio</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,700;1,9..144,600&family=IBM+Plex+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&family=Noto+Serif+Thai:wght@600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/static/css/tokens.css" />
+  <link rel="stylesheet" href="/static/css/studio.css" />
+</head>
+<body>
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+  <div id="toast-rack" class="toast-rack" aria-live="polite"></div>
+
+  <!-- Top Editorial Bar -->
+  <header id="topbar" class="topbar">
+    <div class="brand-lockup" id="brand-home-btn" role="button" tabindex="0">
+      <div class="brand-mark">&lt;/&gt;</div>
+      <div>
+        <div class="brand-title">DevQuest Atelier</div>
+        <div class="brand-sub">HTML Craft · SOLO AI · v2.0</div>
+      </div>
+    </div>
+
+    <nav id="main-nav" class="nav-pills hidden" aria-label="Primary Navigation">
+      <button class="nav-pill active" data-view="atlas">🗺️ Atlas & Quests</button>
+      <button class="nav-pill" data-view="studio">⌨️ Coding Studio</button>
+      <button class="nav-pill" data-view="simcode">🧪 SimCode</button>
+      <button class="nav-pill" data-view="progress">📊 SOLO Analytics</button>
+    </nav>
+
+    <div class="topbar-right">
+      <div id="user-exp-pill" class="exp-pill hidden">
+        <span id="nav-username">Explorer</span>
+        <div class="exp-mini-bar"><div id="nav-exp-fill" class="exp-mini-fill"></div></div>
+        <span id="nav-exp-val">0 EXP</span>
+      </div>
+      <button id="sound-toggle" class="btn btn-sm btn-icon" title="เปิด/ปิดเสียงคลิก">🔊</button>
+      <button id="theme-toggle" class="btn btn-sm btn-icon" title="สลับโหมด Paper / Blueprint">◐</button>
+      <button id="logout-btn" class="btn btn-sm btn-ghost hidden">ออกจากระบบ</button>
+    </div>
+  </header>
+
+  <!-- ==================== VIEW 1: LANDING / AUTH GATE ==================== -->
+  <main id="view-auth" class="auth-stage">
+    <section>
+      <div class="eyebrow">
+        <span class="eyebrow-dot"></span>
+        ISSUE NO. 02 · INTERACTIVE HTML EXPEDITION
+      </div>
+      <h1 class="hero-headline">
+        ฝึกเขียน <em>HTML</em> แบบนักออกแบบ<br />พร้อมโค้ช AI สาย SOLO
+      </h1>
+      <p class="hero-lead">
+        ผจญภัย 12 บทเรียน + 2 ด่าน Boss Citadel ในสตูดิโอที่เห็นทั้ง Live Browser และ DOM X-Ray แบบเรียลไทม์
+        พร้อมระบบแอบบอกใบ้ SOLO Taxonomy 5 ระดับที่ไม่เฉลยคำตอบตรง ๆ แต่สอนให้คุณคิดเป็นระบบ
+      </p>
+      <div class="feature-ticker">
+        <span class="badge badge-chartreuse">✓ 12 Quests + 2 Bosses</span>
+        <span class="badge badge-cobalt">✦ SOLO 5-Level AI Coach</span>
+        <span class="badge badge-marigold">⚡ Live DOM X-Ray</span>
+        <span class="badge">🔒 FastAPI + JWT + bcrypt</span>
+      </div>
+
+      <div class="card auth-card">
+        <div class="auth-tabs">
+          <button id="tab-login" class="auth-tab active" type="button">เข้าสู่ระบบ</button>
+          <button id="tab-signup" class="auth-tab" type="button">สมัครสมาชิกใหม่</button>
+        </div>
+        <div class="card-body">
+          <div id="auth-error" class="auth-error hidden"></div>
+          <form id="auth-form">
+            <div class="form-group">
+              <label class="form-label" for="auth-username">ชื่อผู้ใช้ (3–32 ตัวอักษร a-z, 0-9, _.-)</label>
+              <input id="auth-username" class="form-input" type="text" required minlength="3" maxlength="32" placeholder="เช่น design_hero" autocomplete="username" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="auth-password">รหัสผ่าน (อย่างน้อย 8 ตัว มีตัวอักษร + ตัวเลข)</label>
+              <input id="auth-password" class="form-input" type="password" required minlength="8" maxlength="128" placeholder="••••••••" autocomplete="current-password" />
+            </div>
+            <button id="auth-submit-btn" class="btn btn-primary" style="width:100%;" type="submit">
+              เข้าสู่สตูดิโอ →
+            </button>
+          </form>
+          <div style="margin-top:14px;padding-top:14px;border-top:1.5px dashed var(--border-subtle);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+            <span style="font-size:0.82rem;color:var(--ink-secondary);">อยากลองเล่นก่อนสมัคร?</span>
+            <button id="guest-btn" class="btn btn-sm btn-chartreuse" type="button">เข้าโหมดทดลอง (Guest)</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Interactive Postcard Toy -->
+    <aside class="landing-toy">
+      <div class="toy-stamp">LIVE PLAYABLE · ลองแก้โค้ดได้เลย!</div>
+      <div class="card">
+        <div class="card-header">
+          <span class="mono" style="font-size:0.78rem;font-weight:700;">postcard.html</span>
+          <span class="badge badge-cobalt">Sandboxed Preview</span>
+        </div>
+        <textarea id="toy-editor" class="toy-editor" spellcheck="false" aria-label="Try live HTML">&lt;article style="font-family:sans-serif"&gt;
+  &lt;h2 style="margin:0;color:#ff4d2a"&gt;สวัสดี DevQuest Atelier!&lt;/h2&gt;
+  &lt;p&gt;ลองแก้คำใน &lt;mark&gt;แท็ก HTML&lt;/mark&gt; นี้ดูสิ — ผลลัพธ์เปลี่ยนทันที!&lt;/p&gt;
+&lt;/article&gt;</textarea>
+        <div class="toy-preview-wrap">
+          <div class="eyebrow" style="margin-bottom:8px;">LIVE OUTPUT</div>
+          <iframe id="toy-iframe" class="toy-iframe" sandbox="allow-scripts" title="Interactive HTML postcard preview"></iframe>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- ==================== VIEW 2: EXPEDITION ATLAS (DASHBOARD) ==================== -->
+  <section id="view-atlas" class="page-container hidden">
+    <div class="atlas-hero">
+      <div class="card telemetry-banner">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-dot"></span>EXPEDITION TELEMETRY</div>
+          <h2 id="atlas-rank" class="rank-title">Apprentice Typesetter</h2>
+          <p style="margin:6px 0 0;color:var(--ink-secondary);font-size:0.9rem;">
+            เลือกด่านบนแผนที่การผจญภัย หรือกดปุ่มด้านขวาเพื่อลุยภารกิจถัดไปทันที
+          </p>
+        </div>
+        <div class="stat-strip">
+          <div class="stat-chip">
+            <div id="stat-exp" class="stat-chip-val">0</div>
+            <div class="stat-chip-lbl">Total EXP</div>
+          </div>
+          <div class="stat-chip">
+            <div id="stat-cleared" class="stat-chip-val">0/14</div>
+            <div class="stat-chip-lbl">Stamps</div>
+          </div>
+          <div class="stat-chip">
+            <div id="stat-streak" class="stat-chip-val">1 🔥</div>
+            <div class="stat-chip-lbl">Day Streak</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-body" style="display:flex;flex-direction:column;justify-content:space-between;gap:12px;">
+        <div>
+          <div class="eyebrow">NEXT MISSION</div>
+          <h3 id="next-quest-title" style="font-size:1.3rem;margin-top:6px;">โครงกระดูกหน้าเว็บแรก</h3>
+          <p id="next-quest-sub" style="margin:4px 0 0;font-size:0.86rem;color:var(--ink-secondary);">Act I · Foundations · +80 EXP</p>
+        </div>
+        <button id="continue-quest-btn" class="btn btn-primary" style="width:100%;">
+          ▶ ออกเดินทางต่อทันที
+        </button>
+      </div>
+    </div>
+
+    <div class="atlas-grid">
+      <div>
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <strong class="font-display" style="font-size:1.15rem;">แผนที่เส้นทาง HTML Expedition</strong>
+              <span class="mono" style="font-size:0.74rem;color:var(--ink-muted);margin-left:8px;">คลิกที่หมุดเพื่อเข้าสตูดิโอ</span>
+            </div>
+            <span class="badge badge-vermilion">12 Lessons + 2 Bosses</span>
+          </div>
+          <div class="map-viewport">
+            <svg id="quest-map-svg" class="quest-map-svg" viewBox="0 0 840 460" role="img" aria-label="Interactive HTML Quest Map"></svg>
+          </div>
+        </div>
+
+        <div id="chapter-grid" class="chapter-grid"></div>
+      </div>
+
+      <aside style="display:flex;flex-direction:column;gap:20px;">
+        <div class="card">
+          <div class="card-header">
+            <strong class="font-display">🏆 Hall of Craft (Top 10)</strong>
+            <button id="refresh-lb-btn" class="btn btn-sm btn-ghost">รีเฟรช</button>
+          </div>
+          <div id="leaderboard-list" class="card-body"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <strong class="font-display">🧠 SOLO Taxonomy Guide</strong>
+          </div>
+          <div class="card-body" style="font-size:0.84rem;color:var(--ink-secondary);">
+            <p style="margin-top:0;">ทุกบทเรียนใน DevQuest Atelier ออกแบบตามหลัก <strong>SOLO Taxonomy</strong> 5 ระดับ:</p>
+            <ol style="padding-left:18px;margin:0;display:flex;flex-direction:column;gap:5px;">
+              <li><strong>Pre-structural</strong> — เริ่มจับภาพรวม</li>
+              <li><strong>Uni-structural</strong> — เขียนแท็กเดี่ยวได้</li>
+              <li><strong>Multi-structural</strong> — ใช้หลายแท็กร่วมกัน</li>
+              <li><strong>Relational</strong> — วางโครงสร้างซ้อนสัมพันธ์กัน</li>
+              <li><strong>Extended Abstract</strong> — Semantic + A11y มืออาชีพ</li>
+            </ol>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ==================== VIEW 3: CODING STUDIO (LESSONS & BOSS) ==================== -->
+  <section id="view-studio" class="studio-shell hidden">
+    <div class="studio-bar">
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+        <button id="back-to-atlas-btn" class="btn btn-sm">← แผนที่</button>
+        <span id="studio-act-badge" class="badge badge-cobalt">Act I</span>
+        <strong id="studio-quest-title" class="font-display" style="font-size:1.15rem;">โครงกระดูกหน้าเว็บแรก</strong>
+        <span id="studio-exp-badge" class="badge badge-chartreuse">+80 EXP</span>
+      </div>
+
+      <div id="boss-hp-box" class="boss-hp-wrap hidden">
+        <span class="mono" style="font-size:0.75rem;font-weight:800;color:var(--accent-crimson);">BOSS HP</span>
+        <div class="boss-hp-track"><div id="boss-hp-fill" class="boss-hp-fill" style="width:100%"></div></div>
+        <span id="boss-hp-text" class="mono" style="font-size:0.75rem;font-weight:800;">100%</span>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button id="studio-ai-quick-btn" class="btn btn-sm btn-cobalt">✦ วิเคราะห์ด้วย AI Coach</button>
+        <button id="studio-verify-btn" class="btn btn-sm btn-primary">▶ ตรวจภารกิจ (Ctrl+Enter)</button>
+      </div>
+    </div>
+
+    <div class="studio-workspace">
+      <!-- Pane 1: Brief / SOLO Hints / AI Coach -->
+      <div class="studio-pane">
+        <div class="pane-tabs">
+          <button class="pane-tab active" data-studio-tab="mission">📋 ภารกิจ</button>
+          <button class="pane-tab" data-studio-tab="solo">🧭 SOLO Hints</button>
+          <button class="pane-tab" data-studio-tab="ai">✦ AI Coach</button>
+        </div>
+
+        <div id="studio-tab-mission" class="pane-scroll">
+          <div class="eyebrow">MISSION BRIEF</div>
+          <p id="studio-brief" style="margin:8px 0 14px;font-size:0.92rem;"></p>
+          <div class="eyebrow">OBJECTIVES (AUTO-CHECK)</div>
+          <ul id="studio-objectives" class="objective-list"></ul>
+        </div>
+
+        <div id="studio-tab-solo" class="pane-scroll hidden">
+          <p style="margin:0 0 12px;font-size:0.84rem;color:var(--ink-secondary);">
+            คลิกเปิดคำใบ้ทีละระดับตามหลัก SOLO Taxonomy — ไม่มีเฉลยโค้ดตรง ๆ เพื่อฝึกทักษะการคิดเชิงโครงสร้าง
+          </p>
+          <div id="solo-ladder" class="solo-ladder"></div>
+        </div>
+
+        <div id="studio-tab-ai" class="pane-scroll hidden">
+          <div id="ai-meter" class="ai-meter">
+            <div>
+              <div class="eyebrow">DETECTED SOLO LEVEL</div>
+              <strong id="ai-solo-level" style="font-size:1.05rem;">กดปุ่มวิเคราะห์ด้านล่าง</strong>
+            </div>
+            <div style="text-align:right;">
+              <div class="eyebrow">SCORE</div>
+              <strong id="ai-score" class="mono" style="font-size:1.2rem;">—</strong>
+            </div>
+          </div>
+          <div id="ai-response-box" class="ai-bubble">
+            โค้ช AI พร้อมวิเคราะห์โครงสร้าง HTML, แท็กตกหล่น, และ Accessibility ของโค้ดที่คุณเขียนอยู่ โดยไม่สปอยล์เฉลย!
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ai-question-input">ถามโค้ชเพิ่มเติม (ไม่บังคับ)</label>
+            <input id="ai-question-input" class="form-input" type="text" placeholder="เช่น ทำไมแท็กนี้ควรซ้อนอยู่ใน main?" />
+          </div>
+          <button id="ai-run-btn" class="btn btn-cobalt" style="width:100%;">✦ ส่งโค้ดให้ AI SOLO Coach วิเคราะห์</button>
+          <div id="ai-engine-tag" class="mono" style="margin-top:8px;font-size:0.7rem;color:var(--ink-muted);text-align:right;"></div>
+        </div>
+      </div>
+
+      <!-- Pane 2: Code Atelier Editor -->
+      <div class="studio-pane editor-pane">
+        <div class="editor-toolbar">
+          <div id="snippet-bar" class="snippet-bar"></div>
+          <div style="display:flex;gap:6px;">
+            <button id="studio-reset-btn" class="snippet-chip" type="button">↺ รีเซ็ตโค้ด</button>
+          </div>
+        </div>
+        <div class="editor-surface">
+          <div id="studio-lines" class="line-numbers">1</div>
+          <textarea id="studio-editor" class="code-textarea" spellcheck="false" aria-label="HTML Code Editor"></textarea>
+        </div>
+      </div>
+
+      <!-- Pane 3: Sandboxed Live Preview & DOM X-Ray -->
+      <div class="studio-pane">
+        <div class="pane-tabs">
+          <button class="pane-tab active" data-preview-tab="browser">🌐 Live Browser</button>
+          <button class="pane-tab" data-preview-tab="xray">🧬 DOM X-Ray</button>
+        </div>
+        <div id="preview-browser-pane" class="preview-frame-wrap">
+          <iframe id="studio-preview" class="preview-iframe" sandbox="allow-scripts" title="Live HTML Preview"></iframe>
+        </div>
+        <div id="preview-xray-pane" class="pane-scroll hidden"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== VIEW 4: SIMCODE PLAYGROUND ==================== -->
+  <section id="view-simcode" class="studio-shell hidden">
+    <div class="studio-bar">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <strong class="font-display" style="font-size:1.15rem;">🧪 SimCode Freeform Atelier</strong>
+        <button class="btn btn-sm" data-preset="editorial">📰 Magazine</button>
+        <button class="btn btn-sm" data-preset="form">📝 Form</button>
+        <button class="btn btn-sm" data-preset="bento">📊 Bento</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-sm" data-vp="desktop">🖥️ Desktop</button>
+        <button class="btn btn-sm" data-vp="tablet">📱 Tablet</button>
+        <button class="btn btn-sm" data-vp="mobile">📲 Mobile</button>
+        <button id="sim-ai-btn" class="btn btn-sm btn-cobalt">✦ AI Audit</button>
+        <button id="sim-export-btn" class="btn btn-sm btn-chartreuse">⬇ Export .html</button>
+      </div>
+    </div>
+    <div class="studio-workspace" style="grid-template-columns:1fr 1fr;">
+      <div class="studio-pane editor-pane">
+        <div class="editor-surface">
+          <div id="sim-lines" class="line-numbers">1</div>
+          <textarea id="sim-editor" class="code-textarea" spellcheck="false" aria-label="SimCode HTML Editor"></textarea>
+        </div>
+      </div>
+      <div class="studio-pane">
+        <div class="pane-tabs">
+          <button class="pane-tab active" data-sim-tab="browser">🌐 Live Preview</button>
+          <button class="pane-tab" data-sim-tab="xray">🧬 DOM X-Ray</button>
+        </div>
+        <div id="sim-browser-pane" class="preview-frame-wrap">
+          <iframe id="sim-preview" class="preview-iframe" sandbox="allow-scripts" title="SimCode Preview"></iframe>
+        </div>
+        <div id="sim-xray-pane" class="pane-scroll hidden"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== VIEW 5: SOLO ANALYTICS & PROGRESS ==================== -->
+  <section id="view-progress" class="page-container hidden">
+    <div class="eyebrow"><span class="eyebrow-dot"></span>MASTERY LEDGER</div>
+    <h2 style="font-size:2rem;margin:6px 0 20px;">สมุดพกทักษะ & SOLO Taxonomy Analytics</h2>
+    <div class="atlas-grid">
+      <div class="card">
+        <div class="card-header"><strong class="font-display">การกระจายระดับ SOLO ของภารกิจที่ผ่าน</strong></div>
+        <div id="solo-chart-box" class="card-body"></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><strong class="font-display">ตราประทับความสำเร็จ (Stamps)</strong></div>
+        <div id="stamps-box" class="card-body" style="display:flex;flex-wrap:wrap;gap:8px;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Victory Stamp Modal -->
+  <div id="stamp-overlay" class="stamp-overlay hidden" role="dialog" aria-modal="true">
+    <div class="card stamp-modal">
+      <div id="stamp-seal" class="ink-stamp">QUEST CLEARED</div>
+      <h2 id="stamp-title" style="font-size:1.6rem;margin-bottom:8px;">ยอดเยี่ยมมาก!</h2>
+      <p id="stamp-desc" style="color:var(--ink-secondary);margin:0 0 18px;"></p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button id="stamp-close-btn" class="btn">อยู่หน้านี้ต่อ</button>
+        <button id="stamp-next-btn" class="btn btn-primary">ไปภารกิจถัดไป →</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/static/js/app.js"></script>
+</body>
+</html>

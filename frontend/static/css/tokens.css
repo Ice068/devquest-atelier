@@ -1,0 +1,83 @@
+/* ==========================================================================
+   DevQuest Atelier — Design Tokens
+   Aesthetic: Tactile Editorial Arcade (Warm Paper Ink + Midnight Blueprint)
+   ========================================================================== */
+
+:root {
+  /* Paper Atelier (Default) */
+  --bg-canvas: #f6f2ea;
+  --bg-surface: #fffdf9;
+  --bg-well: #ece6d9;
+  --bg-elevated: #ffffff;
+  --bg-editor: #14161a;
+  --bg-editor-gutter: #1b1e24;
+
+  --ink-primary: #161513;
+  --ink-secondary: #524e47;
+  --ink-muted: #7d776c;
+  --ink-inverse: #fffdf9;
+
+  --border-ink: #161513;
+  --border-subtle: rgba(22, 21, 19, 0.16);
+  --grid-dot: rgba(22, 21, 19, 0.1);
+
+  /* Hardware Signal Accents */
+  --accent-vermilion: #ff4d2a;
+  --accent-vermilion-deep: #d93818;
+  --accent-cobalt: #1f47ff;
+  --accent-cobalt-soft: #e6ecff;
+  --accent-chartreuse: #c9f642;
+  --accent-chartreuse-ink: #192600;
+  --accent-marigold: #f5a524;
+  --accent-marigold-soft: #fff3d6;
+  --accent-crimson: #dc2626;
+  --accent-emerald: #108a4b;
+
+  /* Typography */
+  --font-display: "Fraunces", "Noto Serif Thai", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", "IBM Plex Sans Thai", -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* Physical Tactile Elevation */
+  --shadow-ink-sm: 0 2px 0 var(--border-ink);
+  --shadow-ink: 0 4px 0 var(--border-ink);
+  --shadow-ink-lg: 0 6px 0 var(--border-ink);
+  --shadow-card: 4px 4px 0 var(--border-ink);
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+
+  /* Spring Curves */
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+[data-theme="blueprint"] {
+  --bg-canvas: #10131a;
+  --bg-surface: #181c26;
+  --bg-well: #121620;
+  --bg-elevated: #1f2533;
+  --bg-editor: #0c0e13;
+  --bg-editor-gutter: #131720;
+
+  --ink-primary: #f1ece2;
+  --ink-secondary: #b5b0a4;
+  --ink-muted: #7f8799;
+  --ink-inverse: #10131a;
+
+  --border-ink: #384359;
+  --border-subtle: rgba(241, 236, 226, 0.14);
+  --grid-dot: rgba(114, 152, 255, 0.14);
+
+  --accent-cobalt: #5c7cff;
+  --accent-cobalt-soft: rgba(92, 124, 255, 0.16);
+  --accent-marigold-soft: rgba(245, 165, 36, 0.16);
+
+  --shadow-ink-sm: 0 2px 0 #07090d;
+  --shadow-ink: 0 4px 0 #07090d;
+  --shadow-ink-lg: 0 6px 0 #07090d;
+  --shadow-card: 4px 4px 0 #07090d;
+}

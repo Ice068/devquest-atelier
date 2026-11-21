@@ -1,0 +1,117 @@
+rules_version = '2';
+
+// =============================================================================
+// DevQuest Atelier — Cloud Firestore Security Rules (Server-Only / Default Deny)
+// =============================================================================
+//
+// ARCHITECTURE & SECURITY RATIONALE:
+// DevQuest Atelier uses a Python FastAPI backend with the Firebase Admin SDK
+// for all Cloud Firestore operations.
+//
+// - Firebase Admin SDK authenticates via Google Cloud IAM / Service Account
+//   credentials and bypasses Firestore Security Rules.
+// - All browser, mobile SDK, and client-authenticated REST requests are
+//   subject to these rules and MUST be unconditionally denied.
+//
+// Locking down direct client access guarantees that:
+//   1. Authentication, session management, and JWT/token revocation are
+//      enforced exclusively by the FastAPI backend.
+//   2. Authorization, rate limiting, and AI usage quotas cannot be bypassed
+//      by calling Firestore directly from a browser or mobile client.
+//   3. User PII (email addresses, password hashes, profile metadata) and
+//      security-sensitive records (`revoked_tokens`) are never exposed to
+//      untrusted clients.
+//   4. Schema validation, type safety, size limits, and immutable-field
+//      protections are centrally enforced by FastAPI / Pydantic models.
+//
+// =============================================================================
+// Assumed Data Model (Backend-Managed via Firebase Admin SDK)
+// =============================================================================
+//
+// Collection: users
+// Document ID: {userId} (backend-assigned user identifier)
+// Access: Server-only (Admin SDK). Contains PII & auth metadata.
+// Fields (managed by FastAPI backend):
+//   - user_id / uid: string (required, immutable)
+//   - email: string (required, PII)
+//   - display_name / username: string (optional/required)
+//   - hashed_password / auth metadata: string (sensitive, never client-readable)
+//   - role / tier: string (privileged, server-controlled)
+//   - created_at: timestamp (required, immutable)
+//   - updated_at: timestamp (optional/required)
+//
+// Collection: revoked_tokens
+// Document ID: {tokenId} (JWT jti or hashed token identifier)
+// Access: Server-only (Admin SDK). Security-critical revocation blocklist.
+// Fields (managed by FastAPI backend):
+//   - jti / token_id: string (required, immutable)
+//   - user_id: string (optional/required)
+//   - revoked_at: timestamp (required, immutable)
+//   - expires_at: timestamp (required, for TTL cleanup)
+//
+// Collection: ai_sessions
+// Document ID: {sessionId} (backend-assigned session identifier)
+// Access: Server-only (Admin SDK). Contains user prompts, AI responses, and
+//         quota/audit metadata.
+// Fields (managed by FastAPI backend):
+//   - session_id: string (required, immutable)
+//   - user_id: string (required, immutable owner reference)
+//   - messages / context: list/map (bounded by backend validation)
+//   - status: string (server-controlled workflow state)
+//   - created_at: timestamp (required, immutable)
+//   - updated_at: timestamp (optional/required)
+//
+// =============================================================================
+// IMPORTANT:
+// If direct client-side Firestore access is ever introduced in the future,
+// DO NOT simply relax these rules to `isAuthenticated()`. Implement strict
+// ownership checks, custom-claim RBAC, field-level schema & size validators
+// (invoked on both `create` and `update`), immutable-field checks, and PII
+// collection separation before granting any client access.
+// =============================================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // -------------------------------------------------------------------------
+    // Backend-Managed Collections (Explicit Client Deny)
+    // -------------------------------------------------------------------------
+
+    // User accounts and PII — strictly server-side via FastAPI Admin SDK.
+    match /users/{userId} {
+      allow read, write: if false;
+
+      match /{subcollection=**} {
+        allow read, write: if false;
+      }
+    }
+
+    // Revoked authentication tokens — strictly server-side security blocklist.
+    match /revoked_tokens/{tokenId} {
+      allow read, write: if false;
+
+      match /{subcollection=**} {
+        allow read, write: if false;
+      }
+    }
+
+    // AI interaction sessions and history — strictly server-side to enforce
+    // rate limiting, quota accounting, and input/output validation.
+    match /ai_sessions/{sessionId} {
+      allow read, write: if false;
+
+      match /{subcollection=**} {
+        allow read, write: if false;
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // Default-Deny Catch-All
+    // -------------------------------------------------------------------------
+    // Deny all direct client-side reads and writes across every document and
+    // subcollection in the database.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

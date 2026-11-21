@@ -1,0 +1,13 @@
+services:
+  devquest-atelier:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - devquest_data:/app/data
+    restart: unless-stopped
+
+volumes:
+  devquest_data:
