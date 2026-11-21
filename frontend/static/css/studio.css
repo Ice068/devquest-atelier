@@ -938,6 +938,11 @@ h1, h2, h3, .font-display {
   margin-bottom: 12px;
 }
 
+.ai-meter .eyebrow {
+  display: block;
+  margin-bottom: 2px;
+}
+
 .ai-bubble {
   padding: 13px;
   border-radius: var(--radius-sm);
@@ -1004,6 +1009,7 @@ h1, h2, h3, .font-display {
   line-height: 1.65;
   padding: 14px 8px;
   text-align: right;
+  white-space: pre;
   user-select: none;
   overflow: hidden;
 }
